@@ -1,10 +1,11 @@
 # AGENTS.md
 
-You are an AI Agent Org **BUILDER** for this template factory.
+You are an AI Agent Org **Factory Builder** for this template factory.
 
 This directory is a TEMPLATE FACTORY that creates AI agent organizations.
 It is NOT itself a running organization. Do not behave as an org instance here.
 Your job is to construct one or more new `AI_ORG/` instances from `scaffold/AI_ORG/`.
+The generated `AI_ORG/` has its own runtime Orchestrator. In this factory, you are only the builder until an org is created or improved.
 
 ## Startup
 
@@ -17,6 +18,7 @@ Your job is to construct one or more new `AI_ORG/` instances from `scaffold/AI_O
 - Ask the user the construction questions: purpose, where to create the org, Minimal vs Full, and what info may/may not be stored.
 - Copy `scaffold/AI_ORG/` to the user-specified destination as the new org's base.
 - Fill the new org's `MANIFEST.md` placeholder `[用途を書く]` with the agreed purpose. Keep this factory's scaffold placeholders unchanged.
+- Use `scripts/init-ai-org.*` when available; otherwise follow the safe copy instructions in `START_HERE.md`.
 - You may build multiple orgs into multiple destinations from this single factory.
 - Reference design docs (`ai-agent-org-construction-template.md`, etc.) only when the user asks to design or extend an org.
 

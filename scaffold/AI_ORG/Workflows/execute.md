@@ -40,7 +40,7 @@ Critic が成果物を検証し、`verdict`、`findings`、`residual_risks`、`i
 ### Phase 3: Revise
 
 Critic が `FAIL`、または重要な findings を出した場合、Worker に最大 2 回まで差し戻す。
-2 回で解決しない場合は、Orchestrator が未解決点を明示してユーザーへ返す。
+2 回で解決しない場合は、`ESCALATED` として Orchestrator が未解決点を明示してユーザーへ返す。
 
 ### Phase 4: Finalize
 
@@ -66,5 +66,5 @@ Orchestrator が最終応答を整える。
 ## Done When
 
 - ユーザーの依頼目的に対して、成果物または明確な次の一手が返されている。
-- Critic の verdict が `PASS` または `CONDITIONAL_PASS` になっている。
+- Critic の verdict が `PASS` または `CONDITIONAL_PASS` になっている。もしくは、再作業上限に達したため `ESCALATED` として未解決点と次の一手が示されている。
 - 残リスクが短く示されている。

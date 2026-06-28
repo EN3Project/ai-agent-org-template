@@ -357,20 +357,10 @@ Additional Read:
 ```markdown
 # Runtime CONTEXT INDEX
 
-## Settings
+## Settings Source
 
-improvement_suggestions: end_of_task
-health_check: manual
-
-Allowed values:
-- off
-- end_of_task
-- periodic
-
-health_check values:
-- off
-- manual
-- periodic
+運用設定の単一情報源は `MANIFEST.md` である。
+このファイルでは `improvement_suggestions` や `health_check` を再定義しない。
 
 ## Template Source
 
@@ -411,8 +401,8 @@ Additional Read:
 Trigger:
 - 組織の健康診断
 - 理論値への磨き込み
-- 同じ摩擦、手戻り、確認過多が繰り返されている
-- `health_check: periodic`
+- 同じ摩擦、手戻り、確認過多が明確に繰り返されている
+- `MANIFEST.md` の `settings.health_check` が `periodic`
 
 Read:
 - `MANIFEST.md`
@@ -439,9 +429,10 @@ Additional Read:
 ## Improvement Signals
 
 Orchestrator は以下を観測したら改善提案を検討する。
+標準閾値は「2回で観測記録、3回で構造改善提案」とする。
 
-- 同じ手順が3回以上繰り返された
-- 同じミスが3回以上出た
+- 同じ手順が2回以上観測された
+- 同じミスが2回以上観測された
 - Worker の役割が広すぎる
 - Critic の指摘が同じカテゴリに偏る
 - Scratch を後から参照する場面が増えた
@@ -449,11 +440,11 @@ Orchestrator は以下を観測したら改善提案を検討する。
 - 通常運用で毎回同じファイルを読んでいる
 - ユーザー確認が多すぎて作業が止まっている
 
-提案は `観測 / 問題 / 提案 / 影響 / 判断` の形式で出す。
+同じ摩擦が3回以上見えたら、提案は `観測 / 問題 / 提案 / 影響 / 判断` の形式で出す。
 
 ## Health Signals
 
-Orchestrator は以下を観測したら、`health_check` 設定に従って `Runtime/HEALTH.md` の確認を検討する。
+Orchestrator は以下を観測したら、`MANIFEST.md` の `settings.health_check` に従って `Runtime/HEALTH.md` の確認を検討する。
 
 - 通常起動で読むファイルが増え続けている
 - Agent の役割境界が曖昧になっている

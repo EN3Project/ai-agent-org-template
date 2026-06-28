@@ -2,18 +2,16 @@
 
 このファイルは、AI_ORG の健康診断メモである。
 通常タスクでは読まない。
-ユーザーが組織改善を求めたとき、または `settings.health_check` が `periodic` のときだけ使う。
+ユーザーが組織改善・健康診断を求めたとき、明確な摩擦が繰り返されたとき、または `MANIFEST.md` の `settings.health_check` が `periodic` のときだけ使う。
 
 ## Settings
 
+運用設定の単一情報源は `MANIFEST.md` である。
+このファイルでは `health_check` を再定義しない。
+
 ```yaml
-health_check: manual # off | manual | periodic
 last_reviewed: null
 ```
-
-- `off`: 健康診断を自動提案しない。
-- `manual`: ユーザーが求めたとき、または明確な改善サインがあるときだけ見る。既定値。
-- `periodic`: 事前に決めた頻度で、短い健康診断を行う。
 
 ## Health Axes
 

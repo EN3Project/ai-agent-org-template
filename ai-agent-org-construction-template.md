@@ -794,7 +794,7 @@ sampling_policy:
     sample_rate: "100%"
     trigger: "all"
   anomaly_triggers:
-    - "Critic が CONDITIONAL PASS を出した場合"
+    - "Critic が CONDITIONAL_PASS を出した場合"
     - "処理時間が平均の2倍を超えた場合"
     - "新規パターンのタスク（過去の実行トレースに類似なし）"
 ```
@@ -905,7 +905,7 @@ quality_gate:
 ### Critic の Output Contract（テンプレート）
 
 ```
-- verdict: PASS | CONDITIONAL PASS | FAIL
+- verdict: PASS | CONDITIONAL_PASS | FAIL
 - issues: GSAR 分類付きの問題リスト
 - bias_check: 主要バイアスの点検結果
 - ai_verification: 一次情報照合の結果

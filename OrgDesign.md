@@ -109,7 +109,7 @@ phase_2:
   agent: "critic"
   input: "Scratch#phase_1 の組織設計ドラフト"
   output: "Scratch#phase_2 に査読結果（verdict + 指摘一覧 + アンチパターン検証）"
-  done_when: "verdict が PASS / CONDITIONAL PASS / FAIL のいずれかで確定し、devil's advocate パスが完了している"
+  done_when: "verdict が PASS / CONDITIONAL_PASS / FAIL のいずれかで確定し、devil's advocate パスが完了している"
   fallback: "FAIL -> Phase 1 に差し戻し（最大2回）"
   execution_mode: "sequential"
 ```

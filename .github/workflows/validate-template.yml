@@ -1,0 +1,41 @@
+name: Validate template
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate with PowerShell
+        shell: pwsh
+        run: ./scripts/validate-template.ps1
+
+      - name: Validate with Bash
+        shell: bash
+        run: bash ./scripts/validate-template.sh
+
+      - name: Smoke test minimal initialization
+        shell: bash
+        run: |
+          bash ./scripts/init-ai-org.sh \
+            --destination /tmp/ai-org-minimal \
+            --purpose "CI minimal smoke"
+
+      - name: Smoke test development preset
+        shell: bash
+        run: |
+          if [ -d ./presets/development/AI_ORG ]; then
+            bash ./scripts/init-ai-org.sh \
+              --destination /tmp/ai-org-development \
+              --purpose "CI development smoke" \
+              --preset development
+          else
+            echo "Development preset not present; skipping."
+          fi

@@ -1,6 +1,6 @@
 # START HERE
 
-このファイルは、LLM がこのディレクトリを読んで AI エージェント組織を立ち上げるための起動指示である。
+このファイルは、LLM がこのテンプレート工場を読んで AI エージェント組織を作成・改善するための起動指示である。
 
 Windows PowerShell 5.1 でこのテンプレートを読む場合は、日本語が文字化けすることがある。必要なら `Get-Content -Encoding UTF8` を使う。
 
@@ -40,29 +40,34 @@ LLM は以下を実行できるものとして扱う。
 
 ## 起動時の役割
 
-あなたは `orchestrator.md` の仕様に従う Orchestrator として振る舞う。なお、このリポジトリ直下の `orchestrator.md` は設計参考である。実際に `AI_ORG/` を作るときは、`scaffold/AI_ORG/orchestrator.md` を含む `scaffold/AI_ORG/` 全体をコピー元にし、ルート直下の `orchestrator.md` はコピーしない。
+このリポジトリ直下では、あなたは **Factory Builder** として振る舞う。
+この場所はテンプレート工場であり、実行中の AI 組織そのものではない。
+生成後の `AI_ORG/` の中では、`AI_ORG/orchestrator.md` に従う Runtime Orchestrator として振る舞う。
+
+このリポジトリ直下の `orchestrator.md` は設計参考である。実際に `AI_ORG/` を作るときは、`scaffold/AI_ORG/orchestrator.md` を含む `scaffold/AI_ORG/` 全体をコピー元にし、ルート直下の `orchestrator.md` はコピーしない。
 
 - ユーザーとの唯一の窓口になる
 - ユーザーの依頼を目的・入力・制約・完了条件に分解する
-- 必要に応じて内部エージェントやワークフローを使う
+- 必要に応じてプリセット、設計参考、初期化スクリプトを使う
 - 重要な応答は Deliberation Gate を通してから返す
 - 内部レビューの詳細な思考過程は出さない
 
 ## LLM向けの読む順序
 
-起動時は、以下の順序で読む。
+起動時は、この `START_HERE.md` が唯一の最初のファイルである。
+このファイルを読んだ後、以下の順序で必要な範囲だけ読む。
 
 1. `README.md`
-2. `orchestrator.md`
-3. `setup-decision-guide.md`
-4. `scaffold/README.md`
-5. `daily-use-minimal-kit.md`
+2. `setup-decision-guide.md`
+3. `scaffold/README.md`
+4. `daily-use-minimal-kit.md`
+5. 必要に応じて `presets/`
 6. 必要に応じて `ai-agent-org-onboarding-guide.md`
 7. 改善提案の判断で迷ったら `continuous-improvement.md`
 8. 理論値、成熟度、健康診断の判断で迷ったら `agent-org-theoretical-maximum.md` と `evaluation-and-observability.md`
-9. 設計判断で迷ったら `ai-agent-org-construction-template.md`
+9. 設計判断で迷ったら `orchestrator.md`、`OrgDesign.md`、`org_designer.md`、`ai-agent-org-construction-template.md`
 
-`OrgDesign.md` と `org_designer.md` は、ユーザーが AI エージェント組織の設計・拡張を求めたときに参照する。
+`OrgDesign.md` と `org_designer.md` は factory-side design references であり、ユーザーが AI エージェント組織の設計・拡張を求めたときに参照する。
 
 ## 人間向けの読む順序
 
@@ -219,9 +224,11 @@ Create:
 
 組織改善や深い設計見直しが必要なときだけ、`Runtime/CONTEXT_INDEX.md` の Mode Router に従ってテンプレート本体を遅延ロードする。
 
-Runtime には改善サインも含める。改善提案の頻度は `MANIFEST.md` または `Runtime/CONTEXT_INDEX.md` に `improvement_suggestions: off | end_of_task | periodic` として明記する。既定は `end_of_task` とし、主作業を邪魔しない。
+Runtime には改善サインも含める。改善提案の頻度は `MANIFEST.md` に `improvement_suggestions: off | end_of_task | periodic` として明記する。既定は `end_of_task` とし、主作業を邪魔しない。
 
-組織の健康診断は `Runtime/HEALTH.md` で扱う。通常タスクでは読まない。ユーザーが組織改善を求めたとき、同じ摩擦が繰り返されたとき、または `health_check: periodic` のときだけ読む。
+運用設定の単一情報源は `MANIFEST.md` である。`Runtime/CONTEXT_INDEX.md` や `Runtime/HEALTH.md` は設定を再定義せず、`MANIFEST.md` を参照する。
+
+組織の健康診断は `Runtime/HEALTH.md` で扱う。通常タスクでは読まない。ユーザーが組織改善・健康診断を求めたとき、明確な摩擦が繰り返されたとき、または `MANIFEST.md` の `settings.health_check` が `periodic` のときだけ読む。
 
 ## CLI 実行ルール
 

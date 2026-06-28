@@ -10,6 +10,43 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 
 実際に `AI_ORG/` を作るときは、`scaffold/AI_ORG/` を唯一のコピー元として使います。必須ファイルは最初から中身つきで用意されており、用途に合わせて `MANIFEST.md` と Runtime の索引を埋めます。このリポジトリ直下の `orchestrator.md` は Orchestrator の仕様・設計参考であり、初回作成時にコピーする正本ではありません。
 
+## Quick Start
+
+最小構成で作る場合:
+
+```bash
+bash scripts/init-ai-org.sh \
+  --destination ./AI_ORG \
+  --purpose "日常の文書作成とレビューを安定して進める"
+```
+
+PowerShell:
+
+```powershell
+.\scripts\init-ai-org.ps1 `
+  -Destination .\AI_ORG `
+  -Purpose "日常の文書作成とレビューを安定して進める"
+```
+
+AI駆動開発向けに作る場合:
+
+```bash
+bash scripts/init-ai-org.sh \
+  --preset development \
+  --destination ./AI_ORG \
+  --purpose "既存コードベースの機能追加、修正、テスト、レビューを安全に進める"
+```
+
+テンプレート自体を検証する場合:
+
+```bash
+bash scripts/validate-template.sh
+```
+
+```powershell
+.\scripts\validate-template.ps1
+```
+
 ## 人間向けの読書順
 
 | 目的 | 読むファイル | 目安 |
@@ -18,6 +55,7 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 | 構成を判断する | `setup-decision-guide.md` | 10分 |
 | 実体テンプレを見る | `scaffold/README.md` | 5分 |
 | 仕事PCで試す | `daily-use-minimal-kit.md` | 15分 |
+| AI駆動開発用に作る | `presets/development/README.md` | 10分 |
 | 理論値への伸ばし方を見る | `agent-org-theoretical-maximum.md` | 10分 |
 | 評価・健康診断の軸を見る | `evaluation-and-observability.md` | 10分 |
 | 用途別に組織を設計する | `ai-agent-org-onboarding-guide.md` | 30-60分 |
@@ -36,8 +74,12 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 
 | ファイル | 役割 |
 |---|---|
-| `START_HERE.md` | 起動指示。LLMが最初に読み、Orchestratorとして立ち上がるためのbootstrap |
+| `START_HERE.md` | 起動指示。LLMが最初に読み、Factory Builderとして立ち上がるためのbootstrap |
 | `setup-decision-guide.md` | 用途別判断ガイド。Minimal / Full、必要なエージェント、Runtime起動モードを判断する |
+| `scripts/` | 初期化、dry-run、テンプレート検証を行う安全な補助スクリプト |
+| `presets/` | 用途別の実体オーバーレイ。現在は Development preset を提供する |
+| `examples/` | Minimal / Development の初回依頼例 |
+| `data-policy.md` | 仕事PCや実プロジェクト導入前に決める情報管理の最小基準 |
 | `continuous-improvement.md` | 継続改善ガイド。運用中にサブエージェント化、ワークフロー化、Vault化、品質ゲート改善を提案する基準 |
 | `agent-org-theoretical-maximum.md` | AIエージェント組織を理論値へ近づける成熟度、判断軸、有効化ルール |
 | `evaluation-and-observability.md` | タスク品質、組織健康度、改善サインを軽量に評価・観測するためのガイド |
@@ -53,7 +95,7 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 
 最初から全機能を使う必要はありません。むしろ、最初は小さく始めます。
 
-1. `START_HERE.md` で LLM を Orchestrator として起動する
+1. `START_HERE.md` で LLM を Factory Builder として起動する
 2. `setup-decision-guide.md` で Minimal / Full と用途別構成を判断する
 3. `scaffold/AI_ORG/` をコピーして、共通階層を作る
 4. `AI_ORG/orchestrator.md` でユーザーとの窓口を一元化する
@@ -65,6 +107,8 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 10. 必要時だけ `Runtime/HEALTH.md` で組織の健康診断を行う
 11. 3回以上回して、失敗パターンが見えてから拡張する
 12. 必要になった段階で、Research / Development / Content / Full に移行する
+
+コード修正・実装・テスト・レビューが主用途なら、最初から `--preset development` を使ってよいです。Development preset は `scaffold/AI_ORG/` を土台にし、Architect / Developer / Tester / Reviewer / DevCycle を追加します。
 
 ## 指示の優先順位
 
