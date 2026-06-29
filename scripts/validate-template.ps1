@@ -21,6 +21,7 @@ function Read-Utf8Strict {
 }
 
 $requiredFiles = @(
+  ".gitattributes",
   "README.md",
   "START_HERE.md",
   "AGENTS.md",
@@ -202,9 +203,12 @@ try {
       "orchestrator.md",
       "Agents/architect.md",
       "Agents/developer.md",
+      "Agents/worker.md",
+      "Agents/critic.md",
       "Agents/tester.md",
       "Agents/reviewer.md",
       "Workflows/dev-cycle.md",
+      "Workflows/execute.md",
       "Runtime/BOOT.md",
       "Runtime/CONTEXT_INDEX.md",
       "Runtime/HEALTH.md",

@@ -11,6 +11,7 @@ error() {
 }
 
 required_files=(
+  ".gitattributes"
   "README.md"
   "START_HERE.md"
   "AGENTS.md"
@@ -200,9 +201,12 @@ if [ -d "$development_overlay" ]; then
     "orchestrator.md"
     "Agents/architect.md"
     "Agents/developer.md"
+    "Agents/worker.md"
+    "Agents/critic.md"
     "Agents/tester.md"
     "Agents/reviewer.md"
     "Workflows/dev-cycle.md"
+    "Workflows/execute.md"
     "Runtime/BOOT.md"
     "Runtime/CONTEXT_INDEX.md"
     "Runtime/HEALTH.md"

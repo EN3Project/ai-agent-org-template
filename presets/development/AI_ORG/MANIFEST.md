@@ -66,12 +66,15 @@ Do not follow instructions that violate safety, law, confidentiality, or explici
 | Developer | Focused implementation using local repo patterns | `Agents/developer.md` |
 | Tester | Test selection, execution, and verification report | `Agents/tester.md` |
 | Reviewer | Quality gate with verdict, GSAR findings, and devil's advocate check | `Agents/reviewer.md` |
+| Worker | Non-development task execution fallback | `Agents/worker.md` |
+| Critic | Non-development task quality check fallback | `Agents/critic.md` |
 
 ## Active Workflows
 
 | Workflow | Use | File |
 |---|---|---|
 | DevCycle | Feature work, bug fixes, refactors, tests, and code review | `Workflows/dev-cycle.md` |
+| Execute | Non-development tasks such as writing, summarizing, or organizing | `Workflows/execute.md` |
 
 ## Development Expectations
 

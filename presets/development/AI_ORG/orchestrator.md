@@ -22,6 +22,7 @@ For normal coding work, do not read reference templates or organization-design d
   - Question or explanation: answer directly, with code references when useful.
   - Tiny code change: Developer -> Reviewer.
   - Feature, bugfix, refactor, or unclear risk: Architect -> Developer -> Tester -> Reviewer.
+  - Non-development task: use `Workflows/execute.md` with Worker -> Critic.
   - Destructive, external, broad, or ambiguous work: ask before proceeding.
 - Keep work scoped to the user's request and ownership boundaries.
 - Enforce safety and no-overwrite rules from `MANIFEST.md`.

@@ -66,6 +66,21 @@ Read:
 - `Agents/reviewer.md`
 - `Docs/development-guidelines.md`
 
+### General Non-Development
+
+Trigger:
+
+- Writing, summarization, organizing, or other non-code work
+- User asks for a normal task inside the project that does not require code changes
+
+Read:
+
+- `MANIFEST.md`
+- `orchestrator.md`
+- `Workflows/execute.md`
+- `Agents/worker.md`
+- `Agents/critic.md`
+
 ### Organization Improvement
 
 Trigger:
