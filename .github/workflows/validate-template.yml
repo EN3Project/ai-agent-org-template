@@ -7,7 +7,12 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    name: Validate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -17,11 +22,18 @@ jobs:
         shell: pwsh
         run: ./scripts/validate-template.ps1
 
+      - name: Validate with Windows PowerShell 5.1
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .\scripts\validate-template.ps1
+
       - name: Validate with Bash
+        if: runner.os == 'Linux'
         shell: bash
         run: bash ./scripts/validate-template.sh
 
       - name: Smoke test minimal initialization
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           bash ./scripts/init-ai-org.sh \
@@ -29,6 +41,7 @@ jobs:
             --purpose "CI minimal smoke"
 
       - name: Smoke test development preset
+        if: runner.os == 'Linux'
         shell: bash
         run: |
           if [ -d ./presets/development/AI_ORG ]; then

@@ -51,15 +51,19 @@ Keep the manifest short. Put detailed coding conventions in `Docs/development-gu
 
 ```text
 AI_ORG/
+  .gitignore
   MANIFEST.md
   orchestrator.md
   Agents/
     architect.md
     developer.md
+    worker.md      # fallback for non-development tasks
+    critic.md      # fallback quality gate
     tester.md
     reviewer.md
   Workflows/
     dev-cycle.md
+    execute.md     # fallback for non-development tasks
   Runtime/
     BOOT.md
     CONTEXT_INDEX.md

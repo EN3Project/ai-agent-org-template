@@ -10,6 +10,20 @@ LLM にこのテンプレートを読ませる場合は、最初に `START_HERE.
 
 実際に `AI_ORG/` を作るときは、`scaffold/AI_ORG/` を唯一のコピー元として使います。必須ファイルは最初から中身つきで用意されており、用途に合わせて `MANIFEST.md` と Runtime の索引を埋めます。このリポジトリ直下の `orchestrator.md` は Orchestrator の仕様・設計参考であり、初回作成時にコピーする正本ではありません。
 
+## 90秒で試す
+
+1. このリポジトリを clone する。
+2. 次を実行する。
+
+```bash
+bash scripts/init-ai-org.sh \
+  --destination ./AI_ORG \
+  --purpose "日常の文書作成とレビューを安定して進める"
+```
+
+3. LLM に `AI_ORG/Runtime/BOOT.md` を読ませる。
+4. 小さい依頼を1つ投げる。
+
 ## Quick Start
 
 最小構成で作る場合:
@@ -108,7 +122,7 @@ bash scripts/validate-template.sh
 11. 3回以上回して、失敗パターンが見えてから拡張する
 12. 必要になった段階で、Research / Development / Content / Full に移行する
 
-コード修正・実装・テスト・レビューが主用途なら、最初から `--preset development` を使ってよいです。Development preset は `scaffold/AI_ORG/` を土台にし、Architect / Developer / Tester / Reviewer / DevCycle を追加します。
+コード修正・実装・テスト・レビューが主用途なら、最初から `--preset development` を使ってよいです。Development preset は `scaffold/AI_ORG/` を土台にし、Architect / Developer / Tester / Reviewer / DevCycle を追加し、非開発タスク用に Worker / Critic / Execute を残します。
 
 ## 指示の優先順位
 

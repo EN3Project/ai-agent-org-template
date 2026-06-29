@@ -1,0 +1,12 @@
+# AI_ORG runtime state
+Scratch/*
+Reports/*
+Vault/*
+
+# Keep directory docs/templates
+!Scratch/README.md
+!Reports/dispatch-trace.md
+!Reports/health-check.md
+!Vault/README.md
+
+# Runtime/OBSERVATIONS.md is tracked by default because it should contain only abstract improvement signals.

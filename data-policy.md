@@ -20,6 +20,14 @@
 | `Decisions/` | 構造変更や重要判断 | 小さな変更では使わない |
 | `Vault/` | 再利用する長期知識 | 保存許可が明確になるまで無効 |
 
+## Git Tracking Policy
+
+生成された `AI_ORG/` を既存リポジトリに置く場合、初期状態では runtime state を Git 管理しない。
+`scaffold/AI_ORG/.gitignore` は `Scratch/`、`Reports/`、`Vault/` の中身を無視し、ディレクトリ説明やテンプレートだけを残す。
+
+`Runtime/OBSERVATIONS.md` は、原文や固有名詞を含まない抽象化した改善サインだけを書く前提で Git 管理してよい。
+ただし、プロジェクトの情報管理ルールが厳しい場合は、各 `AI_ORG/MANIFEST.md` で保存可否を明示する。
+
 ## Approval Required
 
 - 既存ファイルの破壊的変更

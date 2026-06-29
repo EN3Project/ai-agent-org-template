@@ -61,7 +61,7 @@ if ($Preset -eq "development") {
   }
 }
 
-$baseFiles = @(Get-ChildItem -LiteralPath $sourceFull -Recurse -File | Sort-Object FullName)
+$baseFiles = @(Get-ChildItem -LiteralPath $sourceFull -Recurse -File -Force | Sort-Object FullName)
 Write-Host "  base files:  $($baseFiles.Count)"
 $baseRelativeSet = @{}
 foreach ($file in $baseFiles) {
@@ -72,7 +72,7 @@ foreach ($file in $baseFiles) {
 
 if ($Preset -eq "development") {
   $overlayFull = [System.IO.Path]::GetFullPath($overlay)
-  $overlayFiles = @(Get-ChildItem -LiteralPath $overlayFull -Recurse -File | Sort-Object FullName)
+  $overlayFiles = @(Get-ChildItem -LiteralPath $overlayFull -Recurse -File -Force | Sort-Object FullName)
   Write-Host "  overlay files: $($overlayFiles.Count)"
   $overwrittenFiles = New-Object System.Collections.Generic.List[string]
   foreach ($file in $overlayFiles) {
@@ -119,10 +119,11 @@ function Replace-ExactLine {
   )
 }
 
-Copy-Item -LiteralPath $sourceFull -Destination $destinationFull -Recurse
+Copy-Item -LiteralPath $sourceFull -Destination $destinationFull -Recurse -Force
 
 if ($Preset -eq "development") {
-  Copy-Item -Path (Join-Path $overlay "*") -Destination $destinationFull -Recurse -Force
+  Get-ChildItem -LiteralPath $overlay -Force |
+    Copy-Item -Destination $destinationFull -Recurse -Force
 }
 
 $manifestPath = Join-Path $destinationFull "MANIFEST.md"

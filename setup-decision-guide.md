@@ -158,12 +158,16 @@ Copy-Item -LiteralPath $src -Destination $dst -Recurse
 
 ## Use Case Router
 
+Note:
+現在 `scripts/init-ai-org.*` で自動適用できる preset は `minimal` と `development` のみです。
+Research / Content / Full / Governance は、現時点では設計ガイドであり、自動生成 preset ではありません。
+
 | 用途 | 推奨構成 | 作るもの | 後回しにするもの |
 |---|---|---|---|
 | 日常業務補助 | Minimal | Orchestrator, Worker, Critic, Execute, Scratch | Vault運用, 専門エージェント, 並列 |
 | 軽い調査・要約 | Minimal + Research Lite | Worker, Critic, Scratch, 必要なら簡易Scribe | Librarian, 本格Vault, Investigator分離 |
 | 市場調査・技術調査 | Research | Librarian, Investigator, Analyst, Critic, Scribe, StandardResearch, Vault | 並列調査, Curator, 複利ループ |
-| コード修正・開発補助 | Development | Architect, Developer, Tester, Reviewer, DevWorkflow | 大規模CI連携, 複数Reviewer, リリース自動化 |
+| コード修正・開発補助 | Development | Architect, Developer, Tester, Reviewer, DevCycle | 大規模CI連携, 複数Reviewer, リリース自動化 |
 | ドキュメント・記事制作 | Content | Writer, Editor, Critic, Publisher, ContentPipeline | 公開自動化, editorial calendar, A/B検証 |
 | 個人ナレッジ管理 | Research or Full Lite | Librarian, Analyst, Scribe, Critic, Vault, tag-taxonomy | 大規模Curator, ベクトル検索, 週次メンテ |
 | 多目的仕事OS | Full | Orchestrator, Research系, Development系またはContent系, Vault, 複数Workflow | サブ組織, maximum tier, 大規模並列 |

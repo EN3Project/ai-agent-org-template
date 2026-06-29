@@ -19,6 +19,7 @@ required_files=(
   "setup-decision-guide.md"
   "daily-use-minimal-kit.md"
   "scaffold/README.md"
+  "scaffold/AI_ORG/.gitignore"
   "scaffold/AI_ORG/MANIFEST.md"
   "scaffold/AI_ORG/orchestrator.md"
   "scaffold/AI_ORG/Agents/worker.md"
@@ -197,6 +198,7 @@ if [ -d "$development_overlay" ]; then
     --template-path "$root" >/dev/null
 
   required_development_files=(
+    ".gitignore"
     "MANIFEST.md"
     "orchestrator.md"
     "Agents/architect.md"

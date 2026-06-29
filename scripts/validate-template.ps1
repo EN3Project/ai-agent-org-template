@@ -29,6 +29,7 @@ $requiredFiles = @(
   "setup-decision-guide.md",
   "daily-use-minimal-kit.md",
   "scaffold/README.md",
+  "scaffold/AI_ORG/.gitignore",
   "scaffold/AI_ORG/MANIFEST.md",
   "scaffold/AI_ORG/orchestrator.md",
   "scaffold/AI_ORG/Agents/worker.md",
@@ -199,6 +200,7 @@ try {
     & $initScript -Preset development -Destination $developmentDestination -Purpose "validation development copy" -TemplatePath $root | Out-Null
 
     $requiredDevelopmentFiles = @(
+      ".gitignore",
       "MANIFEST.md",
       "orchestrator.md",
       "Agents/architect.md",
