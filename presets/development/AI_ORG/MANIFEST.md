@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This AI_ORG helps an AI coding assistant turn software requests into focused, reviewed, and tested changes in the current repository.
+This AI_ORG helps `[用途を書く]` by turning software requests into focused, reviewed, and tested changes in the current repository.
 
 It exists to make development work immediately usable while keeping context load, approval overhead, and process weight low.
 

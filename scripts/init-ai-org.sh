@@ -107,11 +107,35 @@ if [ "$preset" = "development" ]; then
 fi
 
 file_count="$(find "$source_dir" -type f | wc -l | tr -d ' ')"
-echo "  files:       $file_count"
+echo "  base files:  $file_count"
 find "$source_dir" -type f | sort | while IFS= read -r file; do
   relative="${file#"$source_dir"/}"
   echo "    $relative"
 done
+
+if [ "$preset" = "development" ]; then
+  overlay_count="$(find "$overlay" -type f | wc -l | tr -d ' ')"
+  echo "  overlay files: $overlay_count"
+  base_list="$(mktemp)"
+  overlay_list="$(mktemp)"
+  find "$source_dir" -type f | sort | while IFS= read -r file; do
+    printf '%s\n' "${file#"$source_dir"/}"
+  done >"$base_list"
+  find "$overlay" -type f | sort | while IFS= read -r file; do
+    printf '%s\n' "${file#"$overlay"/}"
+  done >"$overlay_list"
+  while IFS= read -r relative; do
+    echo "    $relative"
+  done <"$overlay_list"
+  overwritten="$(grep -Fxf "$base_list" "$overlay_list" || true)"
+  if [ -n "$overwritten" ]; then
+    echo "  overwritten files: $(printf '%s\n' "$overwritten" | wc -l | tr -d ' ')"
+    printf '%s\n' "$overwritten" | sed 's#^#    #'
+  else
+    echo "  overwritten files: 0"
+  fi
+  rm -f "$base_list" "$overlay_list"
+fi
 
 if [ "$dry_run" -eq 1 ]; then
   echo "Dry run only. No files were written."

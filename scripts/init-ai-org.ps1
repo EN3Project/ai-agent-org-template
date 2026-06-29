@@ -61,11 +61,31 @@ if ($Preset -eq "development") {
   }
 }
 
-$plannedFiles = @(Get-ChildItem -LiteralPath $sourceFull -Recurse -File | Sort-Object FullName)
-Write-Host "  files:       $($plannedFiles.Count)"
-foreach ($file in $plannedFiles) {
+$baseFiles = @(Get-ChildItem -LiteralPath $sourceFull -Recurse -File | Sort-Object FullName)
+Write-Host "  base files:  $($baseFiles.Count)"
+$baseRelativeSet = @{}
+foreach ($file in $baseFiles) {
   $relative = $file.FullName.Substring($sourceFull.Length + 1).Replace("\", "/")
   Write-Host "    $relative"
+  $baseRelativeSet[$relative.ToLowerInvariant()] = $true
+}
+
+if ($Preset -eq "development") {
+  $overlayFull = [System.IO.Path]::GetFullPath($overlay)
+  $overlayFiles = @(Get-ChildItem -LiteralPath $overlayFull -Recurse -File | Sort-Object FullName)
+  Write-Host "  overlay files: $($overlayFiles.Count)"
+  $overwrittenFiles = New-Object System.Collections.Generic.List[string]
+  foreach ($file in $overlayFiles) {
+    $relative = $file.FullName.Substring($overlayFull.Length + 1).Replace("\", "/")
+    Write-Host "    $relative"
+    if ($baseRelativeSet.ContainsKey($relative.ToLowerInvariant())) {
+      $overwrittenFiles.Add($relative) | Out-Null
+    }
+  }
+  Write-Host "  overwritten files: $($overwrittenFiles.Count)"
+  foreach ($relative in $overwrittenFiles) {
+    Write-Host "    $relative"
+  }
 }
 
 if ($DryRun) {

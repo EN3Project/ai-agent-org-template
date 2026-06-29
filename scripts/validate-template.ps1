@@ -70,6 +70,16 @@ foreach ($file in $markdownFiles) {
     continue
   }
 
+  if ($content.Contains("CONDITIONAL PASS")) {
+    Add-Failure "Use machine-readable verdict enum CONDITIONAL_PASS, not CONDITIONAL PASS: $relative"
+  }
+  if ($content.Contains("Workflows/OrgDesign.md")) {
+    Add-Failure "OrgDesign.md is a factory-side reference, not Workflows/OrgDesign.md: $relative"
+  }
+  if ($content.Contains("Agents/org_designer.md")) {
+    Add-Failure "org_designer.md is a factory-side reference, not Agents/org_designer.md: $relative"
+  }
+
   $matches = [regex]::Matches($content, "\[[^\]]+\]\(([^)\s]+)(?:\s+""[^""]*"")?\)")
   foreach ($match in $matches) {
     $target = $match.Groups[1].Value
@@ -121,6 +131,15 @@ if (Test-Path -LiteralPath $contextPath) {
   }
 }
 
+$developmentManifestPath = Join-Path $root "presets/development/AI_ORG/MANIFEST.md"
+if (Test-Path -LiteralPath $developmentManifestPath) {
+  $developmentManifest = Read-Utf8Strict -Path $developmentManifestPath
+  $purposeMatches = [regex]::Matches($developmentManifest, [regex]::Escape($PurposePlaceholder)).Count
+  if ($purposeMatches -ne 1) {
+    Add-Failure "Development preset MANIFEST.md must keep exactly one required purpose placeholder for initialization."
+  }
+}
+
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("ai-org-template-validate-" + [System.Guid]::NewGuid().ToString("N"))
 try {
   New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
@@ -169,6 +188,46 @@ try {
   }
   catch {
     # Expected: safe no-overwrite default.
+  }
+
+  $developmentOverlay = Join-Path $root "presets/development/AI_ORG"
+  if (Test-Path -LiteralPath $developmentOverlay -PathType Container) {
+    $developmentParent = Join-Path $tempRoot "development"
+    New-Item -ItemType Directory -Force -Path $developmentParent | Out-Null
+    $developmentDestination = Join-Path $developmentParent "AI_ORG"
+    & $initScript -Preset development -Destination $developmentDestination -Purpose "validation development copy" -TemplatePath $root | Out-Null
+
+    $requiredDevelopmentFiles = @(
+      "MANIFEST.md",
+      "orchestrator.md",
+      "Agents/architect.md",
+      "Agents/developer.md",
+      "Agents/tester.md",
+      "Agents/reviewer.md",
+      "Workflows/dev-cycle.md",
+      "Runtime/BOOT.md",
+      "Runtime/CONTEXT_INDEX.md",
+      "Runtime/HEALTH.md",
+      "Reports/dispatch-trace.md",
+      "Decisions/ADR-template.md",
+      "Vault/README.md"
+    )
+    foreach ($relative in $requiredDevelopmentFiles) {
+      if (-not (Test-Path -LiteralPath (Join-Path $developmentDestination $relative) -PathType Leaf)) {
+        Add-Failure "Development preset init did not produce required file: $relative"
+      }
+    }
+
+    $developmentCopiedManifestPath = Join-Path $developmentDestination "MANIFEST.md"
+    if (Test-Path -LiteralPath $developmentCopiedManifestPath -PathType Leaf) {
+      $developmentCopiedManifest = Read-Utf8Strict -Path $developmentCopiedManifestPath
+      if ($developmentCopiedManifest.Contains($PurposePlaceholder)) {
+        Add-Failure "Development preset init left the required purpose placeholder in MANIFEST.md."
+      }
+      if (-not $developmentCopiedManifest.Contains("validation development copy")) {
+        Add-Failure "Development preset init did not write the supplied purpose to MANIFEST.md."
+      }
+    }
   }
 } finally {
   $resolvedTemp = Resolve-Path -LiteralPath $tempRoot -ErrorAction SilentlyContinue

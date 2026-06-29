@@ -61,6 +61,15 @@ check_markdown_links() {
       error "Invalid UTF-8: $relative"
       continue
     fi
+    if grep -Fq 'CONDITIONAL PASS' "$file"; then
+      error "Use machine-readable verdict enum CONDITIONAL_PASS, not CONDITIONAL PASS: $relative"
+    fi
+    if grep -Fq 'Workflows/OrgDesign.md' "$file"; then
+      error "OrgDesign.md is a factory-side reference, not Workflows/OrgDesign.md: $relative"
+    fi
+    if grep -Fq 'Agents/org_designer.md' "$file"; then
+      error "org_designer.md is a factory-side reference, not Agents/org_designer.md: $relative"
+    fi
 
     while IFS=$'\t' read -r line target; do
       [ -n "${target:-}" ] || continue
@@ -111,6 +120,14 @@ fi
 context="$root/scaffold/AI_ORG/Runtime/CONTEXT_INDEX.md"
 if [ -f "$context" ] && ! grep -Eq '^\[template path\]\r?$' "$context"; then
   error "Runtime/CONTEXT_INDEX.md must keep the optional template source codeblock line."
+fi
+
+development_manifest="$root/presets/development/AI_ORG/MANIFEST.md"
+if [ -f "$development_manifest" ]; then
+  purpose_count="$( (grep -F -o '[用途を書く]' "$development_manifest" || true) | wc -l | tr -d ' ' )"
+  if [ "$purpose_count" != "1" ]; then
+    error "Development preset MANIFEST.md must keep exactly one required purpose placeholder for initialization."
+  fi
 fi
 
 temp_root="$(mktemp -d "${TMPDIR:-/tmp}/ai-org-template-validate.XXXXXX")"
@@ -166,6 +183,49 @@ fi
 
 if bash "$init_script" --destination "$real_destination" --purpose "overwrite attempt" >/dev/null 2>&1; then
   error "Init script allowed an existing destination to be reused."
+fi
+
+development_overlay="$root/presets/development/AI_ORG"
+if [ -d "$development_overlay" ]; then
+  development_destination="$temp_root/development/AI_ORG"
+  mkdir -p "$(dirname "$development_destination")"
+  bash "$init_script" \
+    --preset development \
+    --destination "$development_destination" \
+    --purpose "validation development copy" \
+    --template-path "$root" >/dev/null
+
+  required_development_files=(
+    "MANIFEST.md"
+    "orchestrator.md"
+    "Agents/architect.md"
+    "Agents/developer.md"
+    "Agents/tester.md"
+    "Agents/reviewer.md"
+    "Workflows/dev-cycle.md"
+    "Runtime/BOOT.md"
+    "Runtime/CONTEXT_INDEX.md"
+    "Runtime/HEALTH.md"
+    "Reports/dispatch-trace.md"
+    "Decisions/ADR-template.md"
+    "Vault/README.md"
+  )
+
+  for relative in "${required_development_files[@]}"; do
+    if [ ! -f "$development_destination/$relative" ]; then
+      error "Development preset init did not produce required file: $relative"
+    fi
+  done
+
+  development_copied_manifest="$development_destination/MANIFEST.md"
+  if [ -f "$development_copied_manifest" ]; then
+    if grep -Fq '[用途を書く]' "$development_copied_manifest"; then
+      error "Development preset init left the required purpose placeholder in MANIFEST.md."
+    fi
+    if ! grep -Fq "validation development copy" "$development_copied_manifest"; then
+      error "Development preset init did not write the supplied purpose to MANIFEST.md."
+    fi
+  fi
 fi
 
 if [ "$failures" -gt 0 ]; then
