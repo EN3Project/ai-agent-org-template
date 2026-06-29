@@ -103,7 +103,7 @@ bash scripts/validate-template.sh
 | `orchestrator.md` | 統括窓口の仕様・設計参考。初回作成時はコピーせず、実体は `scaffold/AI_ORG/orchestrator.md` を使う |
 | `OrgDesign.md` | ワークフロー定義。AIに組織設計を支援させる場合の実行手順 |
 | `org_designer.md` | エージェント定義。組織設計官としての役割、入力契約、出力契約を定義する |
-| `daily-use-minimal-kit.md` | 仕事PCで最小構成から使い始めるための実用キット |
+| `daily-use-minimal-kit.md` | 1日の運用サイクル、拡張判断の目安、導入しないものの基準 |
 
 ## 使い方の基本方針
 
@@ -185,56 +185,6 @@ AIエージェントはセッションごとに記憶が消えます。つまり
 CLI で運用する場合、LLM はファイル作成や更新を実行できるため、削除・上書き・外部送信・公開・カレントディレクトリ外への書き込みは明示承認制にします。
 
 Windows PowerShell 5.1 で Markdown を直接読む場合は、日本語が文字化けすることがあります。その場合は `Get-Content -Encoding UTF8` を使うか、PowerShell 7 以降またはエディタで開いてください。
-
-## 安全な初回コピー例
-
-以下の例は、テンプレートルートで実行する前提です。
-
-PowerShell:
-
-```powershell
-# Run from the template root.
-$src = Resolve-Path ".\scaffold\AI_ORG"
-$dst = Join-Path (Get-Location) "AI_ORG"
-if (Test-Path -LiteralPath $dst) { throw "AI_ORG already exists: $dst" }
-Write-Host "Copy: $src -> $dst"
-Copy-Item -LiteralPath $src -Destination $dst -Recurse
-```
-
-Bash:
-
-```bash
-# Run from the template root.
-src="$(pwd)/scaffold/AI_ORG"
-dst="$(pwd)/AI_ORG"
-[ -e "$dst" ] && { echo "AI_ORG already exists: $dst"; exit 1; }
-printf 'Copy: %s -> %s\n' "$src" "$dst"
-cp -R "$src" "$dst"
-```
-
-どちらも、既存の `AI_ORG/` があれば停止します。コピー前に `src` と `dst` をユーザーに見せ、コピー先が意図どおりか確認してください。
-
-テンプレートを別ディレクトリに置いたまま、現在の作業ディレクトリへ `AI_ORG/` を作る場合は、コピー元を絶対パスで指定します。
-
-```powershell
-$template = "C:\path\to\ai-agent-org-template"
-$src = Join-Path $template "scaffold\AI_ORG"
-$dst = Join-Path (Get-Location) "AI_ORG"
-if (Test-Path -LiteralPath $dst) { throw "AI_ORG already exists: $dst" }
-Write-Host "Copy: $src -> $dst"
-Copy-Item -LiteralPath $src -Destination $dst -Recurse
-```
-
-```bash
-template="/path/to/ai-agent-org-template"
-src="$template/scaffold/AI_ORG"
-dst="$(pwd)/AI_ORG"
-[ -e "$dst" ] && { echo "AI_ORG already exists: $dst"; exit 1; }
-printf 'Copy: %s -> %s\n' "$src" "$dst"
-cp -R "$src" "$dst"
-```
-
-既存の `AI_ORG/` が見つかった場合は、上書きしません。まず `AI_ORG/MANIFEST.md`、`AI_ORG/Runtime/BOOT.md`、`AI_ORG/Runtime/CONTEXT_INDEX.md` を読み、継続するか、別名で新規作成するか、ユーザーに確認します。
 
 ## プレースホルダの扱い
 

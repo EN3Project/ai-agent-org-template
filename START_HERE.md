@@ -191,18 +191,31 @@ Create:
 
 1. ユーザーの用途と制約を聞く
 2. Setup Mode Router で Minimal / Full を判定する
-3. `AI_ORG/` の保存先を確認する。指定がなければカレントディレクトリ直下の `AI_ORG/` を提案する
-4. 作成案を提示する
-5. Minimal Setup の場合、ユーザー承認後に以下を作成する
+3. `scripts/init-ai-org.*` が使える環境では、初期化スクリプトを推奨する
+4. `AI_ORG/` の保存先を確認する。指定がなければカレントディレクトリ直下の `AI_ORG/` を提案する
+5. 作成案を提示する
+6. Minimal Setup の場合、ユーザー承認後に以下を作成する
    - `scaffold/AI_ORG/` をコピーする
    - `MANIFEST.md` の用途、優先順位、情報管理ルールを埋める
    - 元テンプレートの場所が分かる場合だけ、`Runtime/CONTEXT_INDEX.md` の `[template path]` を埋める。通常運用だけなら未設定でよい
    - `improvement_suggestions: off | end_of_task | periodic` の方針を決める
    - `health_check: off | manual | periodic` の方針を決める。迷ったら `manual`
    - 必要なら `Reports/dispatch-trace.md` と `Runtime/OBSERVATIONS.md` の例行を整理する
-6. Full Setup の場合は、`setup-decision-guide.md` の Use Case Router に従って用途別 Agents / Workflows / Vault 運用を設計し、同時に `Runtime/BOOT.md`、`Runtime/CONTEXT_INDEX.md`、`Runtime/OBSERVATIONS.md`、`Runtime/HEALTH.md` を整える
+7. Full Setup の場合は、`setup-decision-guide.md` の Use Case Router に従って用途別 Agents / Workflows / Vault 運用を設計し、同時に `Runtime/BOOT.md`、`Runtime/CONTEXT_INDEX.md`、`Runtime/OBSERVATIONS.md`、`Runtime/HEALTH.md` を整える
 
 ここまでで初回セットアップは完了してよい。最初の実タスク実行は任意ステップとして分ける。
+
+## 初期化スクリプト
+
+`scripts/init-ai-org.sh`（Bash）または `scripts/init-ai-org.ps1`（PowerShell）を使うと、scaffold コピー、placeholder 置換、overwrite 保護を自動で行える。`--dry-run` で事前確認も可能。
+
+```bash
+bash scripts/init-ai-org.sh \
+  --destination ./AI_ORG \
+  --purpose "日常の文書作成とレビューを安定して進める"
+```
+
+スクリプトが使えない環境では、下記の手動コピー例を使う。
 
 ### 任意: 初回実タスク
 
@@ -240,7 +253,9 @@ Runtime には改善サインも含める。改善提案の頻度は `MANIFEST.m
 - 可能なら差分を提示する
 - コマンド実行結果は、重要な行だけ要約する
 
-### 安全なコピー例
+## 手動コピー（fallback）
+
+初期化は `scripts/init-ai-org.*` を推奨する。以下はスクリプトが使えない場合の手順である。
 
 PowerShell:
 
@@ -296,19 +311,7 @@ cp -R "$src" "$dst"
 
 ## プレースホルダ処理
 
-- `[用途を書く]` は、AI_ORG の用途を1文で置き換える
-- `[template path]` は通常運用では未設定のままでよい。組織改善や設計参照で元テンプレートを読む場合だけ、このテンプレートリポジトリへの実パスまたは相対パスに置き換える
-- `[template]` は、`[template path]` が設定されている場合だけ、そのテンプレートルートを指す
-- `[例: ...]` の行は例であり、実運用ルールではない。実例に置き換えるか、不要なら削除する
-
-| 初回セットアップで触る | 初回では触らない |
-|---|---|
-| `MANIFEST.md` の `[用途を書く]` | `Scratch/README.md` 内のタスクテンプレート例 |
-| `MANIFEST.md` の情報管理ルール | `Reports/dispatch-trace.md` のコメント内テンプレート |
-| `settings.improvement_suggestions` | `Decisions/ADR-template.md` の ADR 本文テンプレート |
-| 必要なら `settings.health_check` | `Runtime/HEALTH.md` の例行 |
-| 必要な場合だけ `Runtime/HEALTH.md` の `last_reviewed` | `Reports/health-check.md` の診断テンプレート |
-| 必要な場合だけ `Runtime/CONTEXT_INDEX.md` の `[template path]` | `Vault/README.md` の有効化後テンプレート |
+`README.md` の「プレースホルダの扱い」を参照する。
 
 ## 応答ルール
 
@@ -330,19 +333,7 @@ cp -R "$src" "$dst"
 
 ## 完了条件
 
-初回セットアップは、以下を満たしたら完了とする。
-
-- `AI_ORG/` の最小構成が作成されている
-- `MANIFEST.md` に用途、優先順位、情報管理ルールが書かれている
-- `orchestrator.md` に窓口集約と Deliberation Gate が定義されている
-- Minimal Setup では Worker / Critic / Execute ワークフローが存在する
-- Full Setup では用途別 Agents / Workflows / 必要な Vault が存在する
-- `Runtime/BOOT.md` と `Runtime/CONTEXT_INDEX.md` が存在する
-- `Runtime/OBSERVATIONS.md` が存在し、改善サインを記録できる
-- `Runtime/HEALTH.md` が存在し、必要時に組織健康診断を行える
-- `Reports/`、`Decisions/`、`Vault/` が置き場として存在する
-- `[用途を書く]`、任意の `[template path]`、`[template]`、例行の扱いが整理されている
-
+`README.md` の「推奨する導入順」を参照する。
 最初の Scratch 作成と1回目の実タスク実行は、セットアップ完了後の任意ステップである。
 
 ## ユーザーが「このテンプレートを使って」とだけ言った場合

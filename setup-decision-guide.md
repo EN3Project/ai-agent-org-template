@@ -30,6 +30,8 @@
 
 ## コピー前確認
 
+初期化は `scripts/init-ai-org.*` を推奨する。overwrite 保護、placeholder 置換、dry-run を自動で行える。以下の手動コピー例は、スクリプトが使えない場合の fallback である。
+
 既存 `AI_ORG/` がある場合は上書きせず、継続・拡張として扱う。
 
 PowerShell:
@@ -463,16 +465,4 @@ Orchestrator は以下を観測したら、`MANIFEST.md` の `settings.health_ch
 
 ## プレースホルダ処理
 
-- `[用途を書く]` は、AI_ORG の用途を1文で置き換える
-- `[template path]` は通常運用では未設定のままでよい。組織改善や設計参照で元テンプレートを読む場合だけ、このテンプレートリポジトリへの実パスまたは相対パスに置き換える
-- `[template]` は、`[template path]` が設定されている場合だけ、そのテンプレートルートを指す
-- `[例: ...]` の行は実運用ルールではない。実例に置き換えるか、不要なら削除する
-
-| 初回セットアップで触る | 初回では触らない |
-|---|---|
-| `MANIFEST.md` の `[用途を書く]` | `Scratch/README.md` 内のタスクテンプレート例 |
-| `MANIFEST.md` の情報管理ルール | `Reports/dispatch-trace.md` のコメント内テンプレート |
-| `settings.improvement_suggestions` | `Decisions/ADR-template.md` の ADR 本文テンプレート |
-| 必要なら `settings.health_check` | `Runtime/HEALTH.md` の例行 |
-| 必要な場合だけ `Runtime/HEALTH.md` の `last_reviewed` | `Reports/health-check.md` の診断テンプレート |
-| 必要な場合だけ `Runtime/CONTEXT_INDEX.md` の `[template path]` | `Vault/README.md` の有効化後テンプレート |
+`README.md` の「プレースホルダの扱い」を参照する。

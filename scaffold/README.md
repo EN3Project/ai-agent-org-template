@@ -25,6 +25,7 @@ LLM は初回セットアップ時、ユーザーの明示承認後に `scaffold
 
 ```text
 AI_ORG/
+  .gitignore
   MANIFEST.md
   orchestrator.md
   Agents/
